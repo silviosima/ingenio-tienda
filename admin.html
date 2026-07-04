@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración - Ingenio cv</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .admin-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 2fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    @media (max-width: 968px) {
+      .admin-grid { grid-template-columns: 1fr; }
+    }
+    .admin-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-lg);
+    }
+    .admin-box-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--primary-cyan);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+    }
+    .table-container { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th, td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-color); }
+    th { color: var(--text-muted); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+    .td-img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; background: #121418; }
+    .actions-cell { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+    .btn-danger { background: #ef4444; color: #fff; border: none; }
+    .btn-danger:hover { background: #dc2626; box-shadow: 0 4px 10px rgba(239,68,68,0.3); }
+    .btn-warning { background: var(--primary-gold); color: var(--bg-dark); border: none; font-weight: 700; }
+    .btn-warning:hover { background: #b8862d; }
+    .image-select-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+    }
+    .image-option {
+      border: 2px solid transparent;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      aspect-ratio: 1.1;
+      background: #121418;
+      transition: var(--transition-smooth);
+    }
+    .image-option img { width: 100%; height: 100%; object-fit: cover; }
+    .image-option:hover { border-color: var(--text-muted); }
+    .image-option.selected { border-color: var(--primary-cyan); }
+    .image-option-none {
+      display: flex; justify-content: center; align-items: center;
+      font-size: 0.8rem; font-weight: bold; color: var(--text-muted);
+      border: 1px dashed var(--border-color);
+    }
+    .admin-tab-content { display: none; }
+    .admin-tab-content.active { display: block; }
+    .form-row { display: flex; gap: 1rem; }
+    .form-row .form-group { flex: 1; }
+    /* Image upload section */
+    .img-upload-section {
+      border-top: 1px solid var(--border-color);
+      padding-top: 1rem;
+      margin-top: 1.5rem;
+    }
+    .img-preview-box {
+      width: 100%;
+      height: 120px;
+      background: #0b0d10;
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+    .img-preview-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+    .img-preview-box .preview-placeholder {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    /* Order card styles */
+    .order-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+      transition: var(--transition-smooth);
+    }
+    .order-card:hover { border-color: rgba(255,255,255,0.12); }
+    .order-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .order-id { font-size: 0.8rem; color: var(--text-muted); font-family: monospace; }
+    .order-customer { font-weight: 700; font-size: 1rem; }
+    .order-total { font-weight: 800; font-size: 1.1rem; color: var(--primary-cyan); white-space: nowrap; }
+    .order-status-select {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .order-status-select:focus { outline: none; border-color: var(--primary-cyan); }
+    .order-items-detail {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+      display: none;
+    }
+    .order-items-detail.open { display: block; }
+    .order-items-detail table { font-size: 0.85rem; }
+    .order-items-detail th { font-size: 0.75rem; }
+    .orders-filters {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .orders-empty {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pantalla de acceso con contraseña -->
+  <div id="admin-login-overlay" style="position:fixed; inset:0; z-index:9999; background:var(--bg-dark); display:flex; align-items:center; justify-content:center; padding:1.5rem;">
+    <div class="admin-box" style="width:100%; max-width:380px; margin-bottom:0;">
+      <h2 class="admin-box-title" style="justify-content:center; border-bottom:none; padding-bottom:0;">Acceso al Panel</h2>
+      <form id="admin-login-form">
+        <div class="form-group">
+          <label class="form-label" for="admin-email-input">Email *</label>
+          <input type="email" id="admin-email-input" class="form-control" placeholder="admin@ejemplo.com" required autofocus>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="admin-password-input">Contraseña *</label>
+          <input type="password" id="admin-password-input" class="form-control" placeholder="Ingresá la contraseña" required>
+        </div>
+        <p id="admin-login-error" style="color:#ef4444; font-size:0.85rem; margin-bottom:1rem; display:none;">Email o contraseña incorrectos.</p>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Ingresar</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="admin-protected-content" style="display:none;">
+
+  <header>
+    <div class="logo-container">
+      <img src="assets/logo.png" alt="Ingenio cv Logo" class="logo-img" onerror="this.style.display='none';">
+      <span class="logo-text">Ingenio cv <span style="font-size:0.8rem;font-weight:500;color:var(--text-muted);vertical-align:middle;margin-left:0.5rem;border:1px solid var(--border-color);padding:2px 8px;border-radius:12px;">Admin</span></span>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Volver a la Tienda</a></li>
+        <li><button id="admin-logout-btn" class="btn btn-secondary btn-sm" type="button">Cerrar sesión</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="admin-container">
+    <div style="margin-bottom:3rem;text-align:center;">
+      <span style="color:#000000;font-size:0.9rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;">Administración de Catálogo</span>
+      <h1 style="font-size:2.8rem;font-weight:800;margin-top:0.5rem;color:#000000;">Panel de Gestión</h1>
+    </div>
+
+    <div class="admin-grid">
+
+      <!-- Left Side: Settings + Product Form -->
+      <div>
+        <!-- Settings -->
+        <div class="admin-box">
+          <h2 class="admin-box-title">Configuración General</h2>
+          <form id="settings-form">
+            <div class="form-group">
+              <label class="form-label" for="vendor-phone">WhatsApp del Vendedor *</label>
+              <input type="text" id="vendor-phone" class="form-control" placeholder="Ej. 54923200342399" required>
+              <small style="color:var(--text-muted);font-size:0.8rem;display:block;margin-top:0.25rem;">Código de país + código de área (sin 15) + número. Ej: 54923200342399</small>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" style="width:100%;">Guardar Ajustes</button>
+          </form>
+        </div>
+
+        <!-- Product Form -->
+        <div class="admin-box">
+          <h2 class="admin-box-title" id="form-title">Agregar Calcomanía</h2>
+          <form id="product-form">
+            <input type="hidden" id="product-id-field">
+
+            <div class="form-group">
+              <label class="form-label" for="p-name">Nombre del Producto *</label>
+              <input type="text" id="p-name" class="form-control" placeholder="Ej. Kit Capot John Deere 7515" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="p-brand">Marca *</label>
+                <select id="p-brand" class="form-control" required></select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="p-category">Categoría *</label>
+                <select id="p-category" class="form-control" required></select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="p-price">Precio ($ ARS) *</label>
+              <input type="number" id="p-price" class="form-control" placeholder="Ej. 35000" min="0" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="p-quantity">Cantidad de Calcos *</label>
+              <input type="number" id="p-quantity" class="form-control" placeholder="Ej. 4" min="1" step="1" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="p-material">Material / Durabilidad *</label>
+              <input type="text" id="p-material" class="form-control" placeholder="Ej. Vinilo Oracal 651" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="p-desc">Descripción *</label>
+              <textarea id="p-desc" class="form-control" rows="3" placeholder="Detalle del kit..." required></textarea>
+            </div>
+
+            <!-- IMAGEN 1 -->
+            <div class="img-upload-section">
+              <label class="form-label" style="color:var(--primary-cyan);font-weight:700;">Foto Principal (Imagen 1) *</label>
+              
+              <!-- Vista previa -->
+              <div class="img-preview-box" id="img1-preview-box">
+                <img id="img1-preview" src="" alt="Vista previa 1">
+                <span class="preview-placeholder">Sin imagen seleccionada</span>
+              </div>
+
+              <!-- Cargar desde carpeta -->
+              <div class="file-upload-wrapper">
+                <div class="file-upload-btn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  Cargar desde carpeta (JPG / PNG / WEBP)
+                </div>
+                <input type="file" class="file-upload-input" id="file-img1" accept="image/*">
+              </div>
+
+              <div style="margin-top:0.75rem;">
+                <label class="form-label" style="font-size:0.8rem;color:var(--text-muted);">— o elegir plantilla —</label>
+                <div class="image-select-grid" id="image1-select-grid">
+                  <div class="image-option selected" data-val="assets/jd_decal_mockup.png"><img src="assets/jd_decal_mockup.png" alt="JD"></div>
+                  <div class="image-option" data-val="assets/case_decal_mockup.png"><img src="assets/case_decal_mockup.png" alt="Case"></div>
+                  <div class="image-option" data-val="assets/nh_decal_mockup.png"><img src="assets/nh_decal_mockup.png" alt="NH"></div>
+                  <div class="image-option" data-val="assets/mf_decal_mockup.png"><img src="assets/mf_decal_mockup.png" alt="MF"></div>
+                  <div class="image-option" data-val="assets/safety_decal_mockup.png"><img src="assets/safety_decal_mockup.png" alt="Seg"></div>
+                  <div class="image-option" data-val="assets/brands_pack_mockup.png"><img src="assets/brands_pack_mockup.png" alt="Pack"></div>
+                  <div class="image-option" data-val="assets/logo.png"><img src="assets/logo.png" alt="Logo"></div>
+                </div>
+                <input type="hidden" id="p-image1" value="assets/jd_decal_mockup.png">
+                <div style="margin-top:0.75rem;">
+                  <label class="form-label" style="font-size:0.8rem;color:var(--text-muted);">— o ingresar URL externa —</label>
+                  <input type="text" id="p-image1-custom" class="form-control" placeholder="https://...">
+                </div>
+              </div>
+            </div>
+
+            <!-- IMAGEN 2 -->
+            <div class="img-upload-section">
+              <label class="form-label" style="color:var(--primary-cyan);font-weight:700;">Foto Alternativa (Imagen 2) — Opcional</label>
+
+              <!-- Vista previa -->
+              <div class="img-preview-box" id="img2-preview-box">
+                <img id="img2-preview" src="" alt="Vista previa 2">
+                <span class="preview-placeholder">Sin imagen seleccionada</span>
+              </div>
+
+              <!-- Cargar desde carpeta -->
+              <div class="file-upload-wrapper">
+                <div class="file-upload-btn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  Cargar desde carpeta (JPG / PNG / WEBP)
+                </div>
+                <input type="file" class="file-upload-input" id="file-img2" accept="image/*">
+              </div>
+
+              <div style="margin-top:0.75rem;">
+                <label class="form-label" style="font-size:0.8rem;color:var(--text-muted);">— o elegir plantilla —</label>
+                <div class="image-select-grid" id="image2-select-grid">
+                  <div class="image-option image-option-none selected" data-val="">Ninguna</div>
+                  <div class="image-option" data-val="assets/jd_decal_mockup.png"><img src="assets/jd_decal_mockup.png" alt="JD"></div>
+                  <div class="image-option" data-val="assets/case_decal_mockup.png"><img src="assets/case_decal_mockup.png" alt="Case"></div>
+                  <div class="image-option" data-val="assets/nh_decal_mockup.png"><img src="assets/nh_decal_mockup.png" alt="NH"></div>
+                  <div class="image-option" data-val="assets/mf_decal_mockup.png"><img src="assets/mf_decal_mockup.png" alt="MF"></div>
+                  <div class="image-option" data-val="assets/safety_decal_mockup.png"><img src="assets/safety_decal_mockup.png" alt="Seg"></div>
+                  <div class="image-option" data-val="assets/brands_pack_mockup.png"><img src="assets/brands_pack_mockup.png" alt="Pack"></div>
+                  <div class="image-option" data-val="assets/logo.png"><img src="assets/logo.png" alt="Logo"></div>
+                </div>
+                <input type="hidden" id="p-image2" value="">
+                <div style="margin-top:0.75rem;">
+                  <label class="form-label" style="font-size:0.8rem;color:var(--text-muted);">— o ingresar URL externa —</label>
+                  <input type="text" id="p-image2-custom" class="form-control" placeholder="https://...">
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:1rem;margin-top:2rem;border-top:1px solid var(--border-color);padding-top:1.5rem;">
+              <button type="submit" class="btn btn-primary" style="flex:1;" id="submit-btn">Guardar Producto</button>
+              <button type="button" class="btn btn-secondary" style="display:none;" id="cancel-edit-btn">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Right Side: Tabbed Panel -->
+      <div class="admin-box">
+        <div class="admin-tab-group">
+          <button class="admin-tab-btn active" data-tab="tab-decals">Calcomanías</button>
+          <button class="admin-tab-btn" data-tab="tab-orders">Pedidos</button>
+          <button class="admin-tab-btn" data-tab="tab-brands">Marcas</button>
+          <button class="admin-tab-btn" data-tab="tab-categories">Categorías</button>
+          <button class="admin-tab-btn" data-tab="tab-payment-pdf">Forma de Pegar</button>
+        </div>
+
+        <!-- TAB CALCOMANÍAS -->
+        <div class="admin-tab-content active" id="tab-decals">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+            <h3 style="font-size:1.2rem;font-weight:700;">Catálogo de Productos</h3>
+            <button class="btn btn-secondary btn-sm" id="reset-catalog-btn">Restaurar Semilla</button>
+          </div>
+          <div class="form-group" style="max-width:400px;">
+            <input type="text" id="decals-search-input" class="form-control" placeholder="Buscar calcomanía por nombre, marca o categoría...">
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Fotos</th>
+                  <th>Nombre / Marca</th>
+                  <th>Precio</th>
+                  <th>Categoría</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="admin-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB PEDIDOS (CRM) -->
+        <div class="admin-tab-content" id="tab-orders">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:1rem;">
+            <h3 style="font-size:1.2rem;font-weight:700;">Historial de Pedidos</h3>
+            <button class="btn btn-danger btn-sm" id="clear-orders-btn">Borrar Todos</button>
+          </div>
+          <div class="form-group" style="max-width:400px;">
+            <input type="text" id="orders-search-input" class="form-control" placeholder="Buscar por cliente, teléfono o N° de pedido...">
+          </div>
+          <!-- Filtros por estado -->
+          <div class="orders-filters" id="orders-filters">
+            <button class="filter-btn active" data-status="Todos">Todos</button>
+            <button class="filter-btn" data-status="Pendiente">Pendiente</button>
+            <button class="filter-btn" data-status="En proceso">En proceso</button>
+            <button class="filter-btn" data-status="Enviado">Enviado</button>
+            <button class="filter-btn" data-status="Entregado">Entregado</button>
+          </div>
+          <div id="orders-list-container">
+            <!-- Order cards injected by admin.js -->
+          </div>
+        </div>
+
+        <!-- TAB MARCAS -->
+        <div class="admin-tab-content" id="tab-brands">
+          <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:1rem;">Administrar Marcas</h3>
+          <form id="add-brand-form" style="display:flex;gap:0.5rem;margin-bottom:1.5rem;">
+            <input type="text" id="new-brand-input" class="form-control" placeholder="Ej. Valtra" required style="padding:0.5rem 1rem;">
+            <button type="submit" class="btn btn-primary btn-sm" style="padding:0.5rem 1.5rem;">Agregar</button>
+          </form>
+          <div class="tax-list" id="brands-list-container"></div>
+        </div>
+
+        <!-- TAB CATEGORÍAS -->
+        <div class="admin-tab-content" id="tab-categories">
+          <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:1rem;">Administrar Categorías</h3>
+          <form id="add-category-form" style="display:flex;gap:0.5rem;margin-bottom:1.5rem;">
+            <input type="text" id="new-category-input" class="form-control" placeholder="Ej. Llantas" required style="padding:0.5rem 1rem;">
+            <button type="submit" class="btn btn-primary btn-sm" style="padding:0.5rem 1.5rem;">Agregar</button>
+          </form>
+          <div class="tax-list" id="categories-list-container"></div>
+        </div>
+
+        <!-- TAB FORMA DE PAGO (PDF) -->
+        <div class="admin-tab-content" id="tab-payment-pdf">
+          <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:1rem;">Documento de Forma de Pegar</h3>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">Subí el PDF con los datos e instrucciones de pago. Este documento se mostrará a los clientes en la tienda, en la opción "Forma de Pegar" del menú, y podrán descargarlo.</p>
+
+          <div class="file-upload-wrapper">
+            <div class="file-upload-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              Cargar / Reemplazar PDF
+            </div>
+            <input type="file" class="file-upload-input" id="file-payment-pdf" accept="application/pdf">
+          </div>
+
+          <div id="payment-pdf-status" style="margin-top:1.5rem; padding:1rem; border:1px solid var(--border-color); border-radius:8px; background:rgba(255,255,255,0.02);">
+            <p id="payment-pdf-status-text" style="font-size:0.9rem; color:var(--text-muted);">No hay ningún PDF cargado todavía.</p>
+            <div style="display:flex; gap:0.5rem; margin-top:0.75rem; flex-wrap:wrap;">
+              <a href="#" id="payment-pdf-view-btn" class="btn btn-secondary btn-sm" style="display:none;" target="_blank" rel="noopener">Ver PDF</a>
+              <a href="#" id="payment-pdf-download-admin-btn" class="btn btn-secondary btn-sm" style="display:none;" download>Descargar PDF</a>
+              <button type="button" class="btn btn-danger btn-sm" id="payment-pdf-delete-btn" style="display:none;">Eliminar PDF</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden canvas for image compression -->
+  <canvas id="compress-canvas" style="display:none;"></canvas>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script src="products.js"></script>
+  <script src="admin-auth.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

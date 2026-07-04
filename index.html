@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ingenio cv - Calcomanías para Maquinaria Agrícola</title>
+  <meta name="description" content="Tienda online de calcomanías premium para tractores y cosechadoras John Deere, Case IH, New Holland, Massey Ferguson. Vinilo de alta durabilidad UV.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-ml.css">
+</head>
+<body class="ml-theme">
+
+  <!-- Header -->
+  <header class="ml-header">
+    <div class="ml-header-top">
+      <div class="logo-container">
+        <img src="assets/logo.png" alt="Ingenio cv Logo" class="logo-img" onerror="this.style.display='none';">
+      </div>
+
+      <div class="ml-search-wrap">
+        <div class="search-input-wrap">
+          <input type="text" id="search-input" class="search-input" placeholder="Buscar por modelo o marca (ej. John Deere 6125, Puma, etc.)...">
+          <button type="button" class="ml-search-btn" aria-label="Buscar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="cart-icon-btn" id="cart-icon-btn" aria-label="Ver carrito">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-badge" id="cart-badge" style="display: none;">0</span>
+        </button>
+
+        <button type="button" class="menu-toggle-btn" id="menu-toggle-btn" aria-label="Abrir menú" aria-expanded="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          Menú
+        </button>
+
+        <nav class="ml-header-nav" id="ml-header-nav">
+          <ul class="nav-links">
+            <li><a href="#catalogo" class="active">Catálogo</a></li>
+            <li><a href="#" id="nav-payment-pdf-link">Forma de Pegar</a></li>
+            <li><a href="#" id="nav-contact-link">Contacto</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-tagline" style="color: var(--primary-orange);">Comunicación Visual Agrícola</span>
+      <h1 class="hero-title">Calcomanías Premium para <span>Máquinas Agrícolas</span></h1>
+      <p class="hero-description">Renová la imagen de tu tractor o cosechadora con kits de calcomanías de alta resistencia. Vinilo vehicular de calidad alemana, protección UV y medidas idénticas a las originales.</p>
+    </div>
+  </section>
+
+  <!-- Main Store Section -->
+  <main class="store-container" id="catalogo">
+    <div class="section-header" style="justify-content: center; text-align: center;">
+      <div class="section-title-wrap">
+        <span class="section-subtitle" style="color: var(--primary-orange);">Nuestros Productos</span>
+        <h2 class="section-title">Catálogo de Calcomanías</h2>
+      </div>
+    </div>
+
+    <!-- Filtros de Categoría y Marca -->
+    <div class="filters-bar">
+      <div class="category-filters" id="category-filters">
+        <!-- Category buttons injected dynamically -->
+      </div>
+      <div class="brand-filters" id="brand-filters">
+        <!-- Brand buttons injected dynamically -->
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid" id="products-grid">
+      <!-- Cards injected dynamically -->
+    </div>
+  </main>
+
+  <!-- Sliding Cart Drawer -->
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer-header">
+      <div class="cart-drawer-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        Tu Carrito
+      </div>
+      <button class="close-drawer-btn" id="close-drawer-btn" aria-label="Cerrar">&times;</button>
+    </div>
+    
+    <div class="cart-items-list" id="cart-items-list">
+      <!-- Cart items injected dynamically -->
+    </div>
+
+    <div class="cart-drawer-footer">
+      <p style="font-size: 0.8rem; color: var(--text-muted); background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem; line-height: 1.4;">
+        📦 La compra se envía 5 días hábiles después de la compra, ya que preparamos cada pedido a medida que los compran.
+      </p>
+      <div class="cart-total-row">
+        <span>Total estimado:</span>
+        <span class="cart-total-val" id="cart-total-val">$0</span>
+      </div>
+      <button class="btn btn-primary checkout-btn" id="checkout-btn">Iniciar Compra</button>
+    </div>
+  </div>
+
+  <!-- Modal Checkout -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 class="modal-title">Finalizar Compra</h2>
+        <button class="close-modal-btn" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="checkout-form">
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; color: var(--primary-cyan);">1. Datos de Contacto</h3>
+          
+          <div class="form-group">
+            <label class="form-label" for="customer-name">Nombre y Apellido *</label>
+            <input type="text" id="customer-name" class="form-control" placeholder="Ej. Juan Pérez" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="customer-phone">WhatsApp de Contacto *</label>
+            <input type="tel" id="customer-phone" class="form-control" placeholder="Ej. +54 9 341 1234567" required>
+          </div>
+
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; color: var(--primary-cyan);">2. Entrega y Envío</h3>
+          
+          <div class="form-group">
+            <label class="form-label">Método de Entrega *</label>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input type="radio" name="shipping-method" id="shipping-store" value="store" checked>
+                <span>Retiro por local (Ingenio cv)</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="shipping-method" id="shipping-home" value="home">
+                <span>Envío a domicilio (Correo Argentino / Expreso)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group" id="address-group" style="display: none;">
+            <div style="display:grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="shipping-street">Calle *</label>
+                <input type="text" id="shipping-street" class="form-control" placeholder="Ej. San Martín">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="shipping-number">Número *</label>
+                <input type="text" id="shipping-number" class="form-control" placeholder="Ej. 123">
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns: 2fr 1fr; gap: 1rem; margin-top:1.25rem;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="shipping-city">Localidad *</label>
+                <input type="text" id="shipping-city" class="form-control" placeholder="Ej. Venado Tuerto">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="shipping-zip">Código Postal *</label>
+                <input type="text" id="shipping-zip" class="form-control" placeholder="Ej. 2600">
+              </div>
+            </div>
+            <div class="form-group" style="margin-top:1.25rem; margin-bottom:0;">
+              <label class="form-label" for="shipping-province">Provincia *</label>
+              <input type="text" id="shipping-province" class="form-control" placeholder="Ej. Santa Fe">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="order-notes">Notas del pedido (Opcional)</label>
+            <textarea id="order-notes" class="form-control" rows="3" placeholder="Aclaraciones sobre modelo, año de la máquina, medidas especiales, etc."></textarea>
+          </div>
+
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.5rem; color: var(--primary-cyan);">3. Método de Pago</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">El pago se realiza mediante transferencia bancaria. Al finalizar, enviarás el detalle del pedido a WhatsApp para que coordinemos y nos envíes el comprobante de transferencia.</p>
+          
+          <div class="bank-details-box" id="bank-details">
+            <div class="bank-details-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+              Cuenta Santander para Transferencia
+            </div>
+            <div class="bank-row">
+              <span class="bank-label">Titular:</span>
+              <span class="bank-val" style="font-family: inherit;">Maccagnani Silvio</span>
+            </div>
+            <div class="bank-row">
+              <span class="bank-label">CUIT:</span>
+              <span class="bank-val">23200342399</span>
+            </div>
+            <div class="bank-row">
+              <span class="bank-label">CBU:</span>
+              <div>
+                <span class="bank-val">0720473388000035595854</span>
+                <button type="button" class="copy-btn" id="copy-cbu-btn" onclick="copyToClipboard('0720473388000035595854', 'copy-cbu-btn')">Copiar</button>
+              </div>
+            </div>
+            <div class="bank-row">
+              <span class="bank-label">Alias:</span>
+              <div>
+                <span class="bank-val">silvio.macc</span>
+                <button type="button" class="copy-btn" id="copy-alias-btn" onclick="copyToClipboard('silvio.macc', 'copy-alias-btn')">Copiar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="cart-total-row" id="checkout-total-row" style="margin-top: 1.5rem;">
+            <span>Total a pagar:</span>
+            <span class="cart-total-val" id="checkout-total-val">$0</span>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.9rem;">
+            Confirmar y Enviar Pedido por WhatsApp
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Éxito / Instrucciones de pago -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="modal-box" style="max-width: 500px;">
+      <div class="modal-body success-view">
+        <div class="success-icon">✓</div>
+        <h2 class="success-title">¡Pedido Generado!</h2>
+        <p class="success-text">Hemos preparado tu pedido. Para finalizar la compra, debés transferir el total e informarnos por WhatsApp enviando el detalle.</p>
+        
+        <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 10px; margin-bottom: 1.5rem; text-align: left;">
+          <p style="font-size: 0.9rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between;">
+            <span>Total a transferir:</span>
+            <strong id="success-total-val" style="color: var(--primary-cyan); font-size: 1.1rem;">$0</strong>
+          </p>
+          <div style="border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem;">Datos del CBU para transferir:</p>
+            <p style="font-size: 0.9rem; font-family: monospace; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 0.25rem 0.5rem; border-radius: 4px;">
+              <span>CBU: 0720473388000035595854</span>
+              <button class="copy-btn" id="success-copy-cbu" onclick="copyToClipboard('0720473388000035595854', 'success-copy-cbu')">Copiar CBU</button>
+            </p>
+            <p style="font-size: 0.9rem; font-family: monospace; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 0.25rem 0.5rem; border-radius: 4px; margin-top: 0.5rem;">
+              <span>Alias: silvio.macc</span>
+              <button class="copy-btn" id="success-copy-alias" onclick="copyToClipboard('silvio.macc', 'success-copy-alias')">Copiar Alias</button>
+            </p>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="success-whatsapp-btn" style="width: 100%; padding: 0.9rem;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 0.5rem;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.458L0 24zm6.59-4.846c1.62.963 3.41 1.47 5.258 1.471 5.561 0 10.085-4.526 10.088-10.09.002-2.696-1.045-5.231-2.949-7.137C17.135 1.5 14.605.453 11.998.453 6.435.453 1.91 4.978 1.907 10.545c-.001 1.895.5 3.734 1.452 5.347l-.956 3.493 3.654-.958zm11.94-6.666c-.328-.164-1.942-.958-2.242-1.069-.3-.111-.519-.166-.738.163-.219.329-.85.85-.1041 1.041-.19.191-.383.219-.71.055-.328-.164-1.385-.51-2.639-1.628-.976-.871-1.635-1.947-1.826-2.275-.192-.328-.02-.505.144-.668.148-.147.328-.383.493-.574.164-.191.219-.328.328-.546.11-.219.055-.41-.027-.574-.082-.164-.738-1.777-1.012-2.433-.267-.643-.539-.556-.738-.566-.19-.01-.41-.01-.629-.01-.219 0-.575.082-.876.41-.3.329-1.148 1.12-1.148 2.73s1.175 3.167 1.339 3.385c.164.218 2.312 3.53 5.599 4.95.781.338 1.39.54 1.866.69.786.25 1.5.215 2.065.13.629-.095 1.942-.794 2.216-1.56.274-.766.274-1.422.192-1.56-.082-.138-.3-.219-.629-.383z"/></svg>
+          Abrir WhatsApp y Enviar Pedido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="modal-overlay" id="detail-modal">
+    <div class="modal-box" style="max-width: 800px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Detalle del Producto</h2>
+        <button class="close-modal-btn" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body" id="detail-modal-content">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Forma de Pegar (PDF) -->
+  <div class="modal-overlay" id="payment-pdf-modal">
+    <div class="modal-box" style="max-width: 900px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Forma de Pegar</h2>
+        <button class="close-modal-btn" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="payment-pdf-empty-state" style="text-align:center; padding: 3rem 1rem; color: var(--text-muted); display:none;">
+          <p>Todavía no se cargó el documento de forma de pago. Por favor, contactanos por WhatsApp para más información.</p>
+        </div>
+        <iframe id="payment-pdf-frame" title="Forma de Pegar" style="width:100%; height:65vh; border:1px solid var(--border-color); border-radius:8px; display:none;"></iframe>
+        <a href="#" id="payment-pdf-download-btn" class="btn btn-primary" style="width:100%; margin-top:1rem; padding:0.9rem; display:none; justify-content:center; align-items:center;" download>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Descargar PDF
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Contacto -->
+  <div class="modal-overlay" id="contact-modal">
+    <div class="modal-box" style="max-width: 500px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Contacto</h2>
+        <button class="close-modal-btn" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <img src="assets/logo.png" alt="Ingenio cv Logo" style="max-width: 140px; margin: 0 auto 1.25rem; display: block;" onerror="this.style.display='none';">
+
+        <p style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); max-width: 600px; margin: 0 auto 1rem;">
+          Somos Ingenio Comunicación Visual, 25 años creando calcos.
+        </p>
+
+        <a href="https://www.google.com/maps/place/Ingenio+Comunicacion+Visual/data=!4m2!3m1!1s0x0:0xdd3853553d04374f?sa=X&ved=1t:2428&ictx=111" target="_blank" rel="noopener" class="btn btn-secondary" style="display: inline-flex; margin-bottom: 1.5rem;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          Ver Ubicación en Google Maps
+        </a>
+
+        <div style="max-width: 700px; margin: 0 auto; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; text-align: left;">
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; margin: 0;">
+            <strong style="color: var(--primary-cyan);">Aclaración:</strong> los calcos se entregan por correo luego de 5 días hábiles de la compra, el envío es a pagar en destino de entrega. Al recibir su compra, envíe un mensaje de recibido indicando si el producto está bien. Ante cualquier inconveniente, no dude en contactarse para solucionarlo.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <img src="assets/logo.png" alt="Ingenio cv" class="footer-logo" onerror="this.style.display='none';">
+    <p style="font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem;">Ingenio cv - Comunicación Visual</p>
+    <p style="font-size: 0.85rem; max-width: 450px; margin: 0 auto 1.25rem;">Especialistas en calcomanías para máquinas agrícolas de todas las marcas. Calidad garantizada.</p>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 Ingenio cv. Todos los derechos reservados.</p>
+      <p style="margin-top: 0.5rem; color: rgba(255,255,255,0.2); font-size: 0.75rem;">Banco Santander - Titular: Maccagnani Silvio - CUIT: 23200342399</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script src="products.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
