@@ -237,6 +237,11 @@ body.ml-theme .hero-description {
 
 body.ml-theme .hero-description { color: #555; }
 
+body.ml-theme .hero-subtitle {
+  color: var(--primary-orange);
+  text-shadow: none;
+}
+
 body.ml-theme .hero-title span {
   background: none;
   -webkit-background-clip: initial;

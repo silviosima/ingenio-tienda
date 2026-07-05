@@ -218,6 +218,15 @@ header {
   -webkit-text-fill-color: transparent;
 }
 
+.hero-subtitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary-orange);
+  margin-bottom: 1.25rem;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+  animation: fadeInUp 0.9s ease;
+}
+
 .hero-description {
   font-size: 1.3rem;
   color: #e5e7eb;
