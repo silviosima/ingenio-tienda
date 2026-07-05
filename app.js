@@ -99,11 +99,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // --- RENDERIZADO DEL CATÁLOGO ---
+  let catalogRenderId = 0; // evita que búsquedas/filtros viejos (que tardan más en responder) pisen el resultado más reciente
   async function renderCatalog() {
-    productsGrid.innerHTML = "";
+    const renderId = ++catalogRenderId;
     products = await getProducts();
     brands = await getBrands();
-    
+    if (renderId !== catalogRenderId) return; // llegó una búsqueda más nueva mientras esperábamos esta; descartamos el resultado viejo
+
+    productsGrid.innerHTML = "";
+
     const filtered = products.filter(product => {
       const matchesBrand = selectedBrand === "Todos" || product.brand.toLowerCase() === selectedBrand.toLowerCase();
       const matchesCategory = selectedCategory === "Todas" || (product.category || "").toLowerCase() === selectedCategory.toLowerCase();
@@ -226,9 +230,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  let searchDebounceTimer;
   searchInput.addEventListener("input", (e) => {
     searchQuery = e.target.value;
-    renderCatalog();
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => renderCatalog(), 250);
   });
 
   // --- DETALLE DE PRODUCTO ---

@@ -259,16 +259,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   // --- TABLA DE PRODUCTOS ---
   let decalsSearchQuery = "";
 
+  let decalsSearchDebounceTimer;
   if (decalsSearchInput) {
-    decalsSearchInput.addEventListener("input", async (e) => {
+    decalsSearchInput.addEventListener("input", (e) => {
       decalsSearchQuery = e.target.value;
-      await renderAdminTable();
+      clearTimeout(decalsSearchDebounceTimer);
+      decalsSearchDebounceTimer = setTimeout(() => renderAdminTable(), 250);
     });
   }
 
+  let adminTableRenderId = 0; // evita que búsquedas viejas (que tardan más en responder) pisen el resultado más reciente
   async function renderAdminTable() {
-    tableBody.innerHTML = "";
+    const renderId = ++adminTableRenderId;
     products = await getProducts();
+    if (renderId !== adminTableRenderId) return; // llegó una búsqueda más nueva mientras esperábamos esta; descartamos el resultado viejo
+
+    tableBody.innerHTML = "";
 
     const query = decalsSearchQuery.trim().toLowerCase();
     const filteredProducts = query
@@ -334,10 +340,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // Búsqueda de pedidos por cliente, teléfono o N° de pedido
+  let ordersSearchDebounceTimer;
   if (ordersSearchInput) {
-    ordersSearchInput.addEventListener("input", async (e) => {
+    ordersSearchInput.addEventListener("input", (e) => {
       ordersSearchQuery = e.target.value;
-      await renderOrders(ordersFilterStatus);
+      clearTimeout(ordersSearchDebounceTimer);
+      ordersSearchDebounceTimer = setTimeout(() => renderOrders(ordersFilterStatus), 250);
     });
   }
 
@@ -357,8 +365,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     return "";
   }
 
+  let ordersRenderId = 0; // evita que búsquedas/filtros viejos (que tardan más en responder) pisen el resultado más reciente
   async function renderOrders(filterStatus) {
+    const renderId = ++ordersRenderId;
     const orders = await getOrders();
+    if (renderId !== ordersRenderId) return; // llegó una búsqueda/filtro más nuevo mientras esperábamos esta; descartamos el resultado viejo
+
     ordersListContainer.innerHTML = "";
 
     let filtered = filterStatus === "Todos" ? orders : orders.filter(o => o.status === filterStatus);
