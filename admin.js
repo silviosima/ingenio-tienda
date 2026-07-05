@@ -621,7 +621,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       const div = document.createElement("div");
       div.className = "tax-item";
       div.innerHTML = `<span class="tax-name">${brand}</span>
-        <button class="btn btn-danger btn-sm delete-brand-btn" data-val="${brand}">Eliminar</button>`;
+        <div class="actions-cell" style="gap:0.4rem;">
+          <button class="btn btn-warning btn-sm edit-brand-btn" data-val="${brand}">Editar</button>
+          <button class="btn btn-danger btn-sm delete-brand-btn" data-val="${brand}">Eliminar</button>
+        </div>`;
       brandsListContainer.appendChild(div);
     });
     document.querySelectorAll(".delete-brand-btn").forEach(btn => {
@@ -632,6 +635,50 @@ document.addEventListener("DOMContentLoaded", async () => {
           await populateFormSelectors();
         }
       });
+    });
+    document.querySelectorAll(".edit-brand-btn").forEach(btn => {
+      btn.addEventListener("click", () => startEditBrand(btn.getAttribute("data-val"), btn.closest(".tax-item")));
+    });
+  }
+
+  // Cambia una fila de marca a modo edición inline (input + Guardar/Cancelar)
+  function startEditBrand(oldName, itemEl) {
+    itemEl.innerHTML = `
+      <input type="text" class="form-control tax-edit-input" value="${oldName}" style="flex:1;margin-right:0.5rem;padding:0.4rem 0.7rem;">
+      <div class="actions-cell" style="gap:0.4rem;">
+        <button class="btn btn-success btn-sm save-brand-btn">Guardar</button>
+        <button class="btn btn-secondary btn-sm cancel-brand-edit-btn">Cancelar</button>
+      </div>
+    `;
+    const input = itemEl.querySelector(".tax-edit-input");
+    input.focus();
+    input.select();
+
+    const save = async () => {
+      const newName = input.value.trim();
+      if (!newName) return;
+      if (newName === oldName) { await renderBrandsList(); return; }
+      const currentBrands = await getBrands();
+      if (currentBrands.some(b => b.toLowerCase() === newName.toLowerCase())) {
+        alert("Ya existe una marca con ese nombre.");
+        return;
+      }
+      try {
+        await renameBrand(oldName, newName);
+        await renderBrandsList();
+        await renderAdminTable();
+        await populateFormSelectors();
+      } catch (err) {
+        console.error("Error renombrando la marca:", err);
+        alert("No se pudo renombrar la marca.");
+      }
+    };
+
+    itemEl.querySelector(".save-brand-btn").addEventListener("click", save);
+    itemEl.querySelector(".cancel-brand-edit-btn").addEventListener("click", () => renderBrandsList());
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); save(); }
+      if (e.key === "Escape") renderBrandsList();
     });
   }
 
@@ -661,7 +708,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       const div = document.createElement("div");
       div.className = "tax-item";
       div.innerHTML = `<span class="tax-name">${category}</span>
-        <button class="btn btn-danger btn-sm delete-category-btn" data-val="${category}">Eliminar</button>`;
+        <div class="actions-cell" style="gap:0.4rem;">
+          <button class="btn btn-warning btn-sm edit-category-btn" data-val="${category}">Editar</button>
+          <button class="btn btn-danger btn-sm delete-category-btn" data-val="${category}">Eliminar</button>
+        </div>`;
       categoriesListContainer.appendChild(div);
     });
     document.querySelectorAll(".delete-category-btn").forEach(btn => {
@@ -672,6 +722,50 @@ document.addEventListener("DOMContentLoaded", async () => {
           await populateFormSelectors();
         }
       });
+    });
+    document.querySelectorAll(".edit-category-btn").forEach(btn => {
+      btn.addEventListener("click", () => startEditCategory(btn.getAttribute("data-val"), btn.closest(".tax-item")));
+    });
+  }
+
+  // Cambia una fila de categoría a modo edición inline (input + Guardar/Cancelar)
+  function startEditCategory(oldName, itemEl) {
+    itemEl.innerHTML = `
+      <input type="text" class="form-control tax-edit-input" value="${oldName}" style="flex:1;margin-right:0.5rem;padding:0.4rem 0.7rem;">
+      <div class="actions-cell" style="gap:0.4rem;">
+        <button class="btn btn-success btn-sm save-category-btn">Guardar</button>
+        <button class="btn btn-secondary btn-sm cancel-category-edit-btn">Cancelar</button>
+      </div>
+    `;
+    const input = itemEl.querySelector(".tax-edit-input");
+    input.focus();
+    input.select();
+
+    const save = async () => {
+      const newName = input.value.trim();
+      if (!newName) return;
+      if (newName === oldName) { await renderCategoriesList(); return; }
+      const currentCategories = await getCategories();
+      if (currentCategories.some(c => c.toLowerCase() === newName.toLowerCase())) {
+        alert("Ya existe una categoría con ese nombre.");
+        return;
+      }
+      try {
+        await renameCategory(oldName, newName);
+        await renderCategoriesList();
+        await renderAdminTable();
+        await populateFormSelectors();
+      } catch (err) {
+        console.error("Error renombrando la categoría:", err);
+        alert("No se pudo renombrar la categoría.");
+      }
+    };
+
+    itemEl.querySelector(".save-category-btn").addEventListener("click", save);
+    itemEl.querySelector(".cancel-category-edit-btn").addEventListener("click", () => renderCategoriesList());
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); save(); }
+      if (e.key === "Escape") renderCategoriesList();
     });
   }
 

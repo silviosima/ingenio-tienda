@@ -58,6 +58,14 @@ async function deleteBrand(name) {
   if (error) throw error;
 }
 
+// Renombra una marca: actualiza la tabla "brands" y todos los productos que la usaban.
+async function renameBrand(oldName, newName) {
+  const { error: brandError } = await supabaseClient.from("brands").update({ name: newName }).eq("name", oldName);
+  if (brandError) throw brandError;
+  const { error: productsError } = await supabaseClient.from("products").update({ brand: newName }).eq("brand", oldName);
+  if (productsError) throw productsError;
+}
+
 // --- CATEGORÍAS ---
 async function getCategories() {
   const { data, error } = await supabaseClient.from("categories").select("name").order("name");
@@ -76,6 +84,14 @@ async function addCategory(name) {
 async function deleteCategory(name) {
   const { error } = await supabaseClient.from("categories").delete().eq("name", name);
   if (error) throw error;
+}
+
+// Renombra una categoría: actualiza la tabla "categories" y todos los productos que la usaban.
+async function renameCategory(oldName, newName) {
+  const { error: categoryError } = await supabaseClient.from("categories").update({ name: newName }).eq("name", oldName);
+  if (categoryError) throw categoryError;
+  const { error: productsError } = await supabaseClient.from("products").update({ category: newName }).eq("category", oldName);
+  if (productsError) throw productsError;
 }
 
 // --- CONFIGURACIÓN (settings genéricos: teléfono del vendedor, etc.) ---
