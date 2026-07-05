@@ -260,6 +260,10 @@ body.ml-theme .hero-title span {
   color: var(--primary-orange);
 }
 
+body.ml-theme .hero-title-orange {
+  color: #e8792a;
+}
+
 /* ---------- SECCIÓN CATÁLOGO ---------- */
 body.ml-theme .store-container {
   background: #ffffff;

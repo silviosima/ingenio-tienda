@@ -225,6 +225,10 @@ header {
   animation: gradientShift 6s linear infinite;
 }
 
+.hero-title-orange {
+  color: #e8792a;
+}
+
 .hero-subtitle {
   font-size: 1.85rem;
   font-weight: 700;
