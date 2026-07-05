@@ -1,6 +1,31 @@
 // Lógica principal de la Tienda Ingenio cv
 
+// Animación de aparición al hacer scroll (para tarjetas, títulos de sección, etc.)
+function setupScrollReveal(selector = ".reveal-up") {
+  const items = document.querySelectorAll(`${selector}:not(.is-visible)`);
+  if (!items.length) return;
+
+  if (!("IntersectionObserver" in window)) {
+    items.forEach(el => el.classList.add("is-visible"));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+
+  items.forEach(el => observer.observe(el));
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
+  // Revela de entrada los elementos estáticos (títulos de sección, filtros, etc.)
+  setupScrollReveal();
+
   let products = await getProducts();
   let brands = await getBrands();
   let categories = await getCategories();
@@ -101,9 +126,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    filtered.forEach(product => {
+    filtered.forEach((product, idx) => {
       const card = document.createElement("div");
-      card.className = "product-card";
+      card.className = "product-card reveal-up";
+      card.style.setProperty("--reveal-index", idx % 8);
       
       const formattedPrice = new Intl.NumberFormat("es-AR", {
         style: "currency", currency: "ARS", minimumFractionDigits: 0
@@ -152,6 +178,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
       productsGrid.appendChild(card);
     });
+
+    setupScrollReveal();
 
     document.querySelectorAll(".add-to-cart-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {

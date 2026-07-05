@@ -27,6 +27,10 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   /* Fondo colorido: Naranja con firuletes/vectores gris oscuro */
   background-color: var(--primary-orange);
@@ -213,18 +217,28 @@ header {
 }
 
 .hero-title span {
-  background: linear-gradient(to right, var(--primary-orange), var(--primary-gold), var(--primary-green), var(--primary-cyan));
+  background: linear-gradient(90deg, var(--primary-orange), var(--primary-gold), var(--primary-green), var(--primary-cyan), var(--primary-orange));
+  background-size: 300% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 6s linear infinite;
 }
 
 .hero-subtitle {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.85rem;
+  font-weight: 700;
   color: var(--primary-orange);
   margin-bottom: 1.25rem;
+  letter-spacing: -0.3px;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
   animation: fadeInUp 0.9s ease;
+}
+
+@media (max-width: 768px) {
+  .hero-subtitle {
+    font-size: 1.35rem;
+  }
 }
 
 .hero-description {
@@ -1224,5 +1238,46 @@ footer {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes gradientShift {
+  to {
+    background-position: 300% center;
+  }
+}
+
+/* ---------- Animaciones al hacer scroll (reveal) ---------- */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Efecto escalonado para tarjetas de producto que aparecen juntas */
+.product-card.reveal-up.is-visible {
+  transition-delay: calc(var(--reveal-index, 0) * 60ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal-up,
+  .hero-title span,
+  .hero-tagline,
+  .hero-title,
+  .hero-subtitle,
+  .hero-description,
+  .hero-cta {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
