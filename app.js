@@ -598,9 +598,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   if (contactLink && contactModal) {
-    contactLink.addEventListener("click", (e) => {
+    contactLink.addEventListener("click", async (e) => {
       e.preventDefault();
       openModal(contactModal);
+      const phoneTextEl = document.getElementById("contact-phone-text");
+      const whatsappLinkEl = document.getElementById("contact-whatsapp-link");
+      if (phoneTextEl && whatsappLinkEl) {
+        const rawPhone = await getVendorPhone();
+        // Formateamos un poco el número para que se lea mejor (ej. +54 9 2320 034239 9)
+        const displayPhone = rawPhone.startsWith("54") ? `+${rawPhone}` : rawPhone;
+        phoneTextEl.textContent = displayPhone;
+        whatsappLinkEl.href = `https://wa.me/${rawPhone}`;
+      }
     });
   }
 

@@ -264,6 +264,13 @@ body.ml-theme .hero-title-orange {
   color: #e8792a;
 }
 
+body.ml-theme .hero-title span.hero-title-orange {
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+  color: #e8792a;
+}
+
 /* ---------- SECCIÓN CATÁLOGO ---------- */
 body.ml-theme .store-container {
   background: #ffffff;

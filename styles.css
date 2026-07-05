@@ -229,6 +229,15 @@ header {
   color: #e8792a;
 }
 
+.hero-title span.hero-title-orange {
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+  background-clip: initial;
+  animation: none;
+  color: #e8792a;
+}
+
 .hero-subtitle {
   font-size: 1.85rem;
   font-weight: 700;
