@@ -50,6 +50,35 @@
     .btn-danger:hover { background: #dc2626; box-shadow: 0 4px 10px rgba(239,68,68,0.3); }
     .btn-warning { background: var(--primary-gold); color: var(--bg-dark); border: none; font-weight: 700; }
     .btn-warning:hover { background: #b8862d; }
+    .btn-success { background: var(--primary-green); color: #0b0d10; border: none; font-weight: 700; }
+    .btn-success:hover { filter: brightness(1.1); }
+    .btn-pdf { background: rgba(84,190,204,0.15); color: var(--primary-cyan); border: 1px solid rgba(84,190,204,0.4); font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem; }
+    .btn-pdf:hover { background: var(--primary-cyan); color: var(--bg-dark); }
+    .order-status-buttons { display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: flex-end; }
+    .status-action-btn {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.35rem 0.7rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      white-space: nowrap;
+    }
+    .status-action-btn:hover { border-color: var(--primary-cyan); color: var(--text-main); }
+    .status-action-btn.active {
+      background: var(--primary-cyan);
+      color: var(--bg-dark);
+      border-color: var(--primary-cyan);
+    }
+    .revert-paid-link {
+      background: none; border: none; color: var(--text-muted); font-size: 0.72rem;
+      text-decoration: underline; cursor: pointer; padding: 0; margin-top: 0.3rem;
+    }
+    .revert-paid-link:hover { color: var(--primary-orange); }
     .image-select-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -125,18 +154,6 @@
     .order-id { font-size: 0.8rem; color: var(--text-muted); font-family: monospace; }
     .order-customer { font-weight: 700; font-size: 1rem; }
     .order-total { font-weight: 800; font-size: 1.1rem; color: var(--primary-cyan); white-space: nowrap; }
-    .order-status-select {
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      font-size: 0.85rem;
-      font-weight: 600;
-      padding: 0.3rem 0.6rem;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .order-status-select:focus { outline: none; border-color: var(--primary-cyan); }
     .order-items-detail {
       margin-top: 1rem;
       padding-top: 1rem;
@@ -393,6 +410,7 @@
           <div class="orders-filters" id="orders-filters">
             <button class="filter-btn active" data-status="Todos">Todos</button>
             <button class="filter-btn" data-status="Pendiente">Pendiente</button>
+            <button class="filter-btn" data-status="Pagado">Pagado</button>
             <button class="filter-btn" data-status="En proceso">En proceso</button>
             <button class="filter-btn" data-status="Enviado">Enviado</button>
             <button class="filter-btn" data-status="Entregado">Entregado</button>
@@ -455,6 +473,8 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <script src="supabase-client.js"></script>
   <script src="products.js"></script>
   <script src="admin-auth.js"></script>

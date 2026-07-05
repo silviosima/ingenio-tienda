@@ -350,6 +350,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function getStatusBadgeClass(status) {
     if (status === "Pendiente") return "status-pendiente";
+    if (status === "Pagado") return "status-pagado";
     if (status === "En proceso") return "status-proceso";
     if (status === "Enviado") return "status-enviado";
     if (status === "Entregado") return "status-entregado";
@@ -397,6 +398,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         return `<tr><td>${item.name}</td><td style="text-align:center;">${item.quantity}</td><td style="text-align:right;">${fmtSubtotal}</td></tr>`;
       }).join("");
 
+      const isPaidOrBeyond = order.status !== "Pendiente";
+
+      // Acciones de estado: mientras está "Pendiente" solo se puede marcar como Pagado.
+      // Una vez pagado, aparecen los botones para avanzar el pedido (En proceso / Enviado / Entregado).
+      const statusActionsHtml = !isPaidOrBeyond
+        ? `<button class="btn btn-success btn-sm mark-paid-btn" data-order-id="${order.id}">💰 Marcar Pagado</button>`
+        : `
+          <div class="order-status-buttons" data-order-id="${order.id}">
+            <button class="status-action-btn ${order.status === "En proceso" ? "active" : ""}" data-status="En proceso">⚙️ En proceso</button>
+            <button class="status-action-btn ${order.status === "Enviado" ? "active" : ""}" data-status="Enviado">🚚 Enviado</button>
+            <button class="status-action-btn ${order.status === "Entregado" ? "active" : ""}" data-status="Entregado">✅ Entregado</button>
+          </div>
+          <button type="button" class="revert-paid-link revert-to-pending-btn" data-order-id="${order.id}">¿Fue un error? Revertir a pendiente</button>
+        `;
+
       const card = document.createElement("div");
       card.className = "order-card";
       card.innerHTML = `
@@ -406,17 +422,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             <div class="order-customer">${order.customer?.name || "Sin nombre"}</div>
             <div style="font-size:0.85rem;color:var(--text-muted);margin-top:0.2rem;">${order.customer?.phone || ""} — ${order.customer?.shippingMethod || ""}</div>
             ${deliveryDateText ? `<div style="font-size:0.85rem;color:var(--primary-cyan);font-weight:600;margin-top:0.3rem;">📅 Entrega estimada: ${deliveryDateText}</div>` : ""}
-            <button class="toggle-details-btn" onclick="toggleOrderDetail('${detailId}')">Ver detalle de productos</button>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem;">
+              <button class="toggle-details-btn" onclick="toggleOrderDetail('${detailId}')">Ver detalle de productos</button>
+              <button type="button" class="btn btn-pdf btn-sm generate-pdf-btn" data-order-id="${order.id}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Generar PDF
+              </button>
+            </div>
           </div>
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;">
             <span class="order-total">${formattedTotal}</span>
             <span class="status-badge ${badgeClass}">${order.status}</span>
-            <select class="order-status-select" data-order-id="${order.id}">
-              <option value="Pendiente" ${order.status === "Pendiente" ? "selected" : ""}>⏳ Pendiente</option>
-              <option value="En proceso" ${order.status === "En proceso" ? "selected" : ""}>⚙️ En proceso</option>
-              <option value="Enviado" ${order.status === "Enviado" ? "selected" : ""}>🚚 Enviado</option>
-              <option value="Entregado" ${order.status === "Entregado" ? "selected" : ""}>✅ Entregado</option>
-            </select>
+            ${statusActionsHtml}
             <button class="btn btn-danger btn-sm delete-order-btn" data-order-id="${order.id}">Eliminar</button>
           </div>
         </div>
@@ -431,21 +448,55 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
       ordersListContainer.appendChild(card);
-    });
 
-    // Cambio de estado
-    document.querySelectorAll(".order-status-select").forEach(sel => {
-      sel.addEventListener("change", async () => {
-        const orderId = sel.getAttribute("data-order-id");
-        const newStatus = sel.value;
-        try {
-          await updateOrderStatus(orderId, newStatus);
-          await renderOrders(ordersFilterStatus);
-        } catch (err) {
-          console.error("Error actualizando el estado del pedido:", err);
-          alert("No se pudo actualizar el estado del pedido.");
-        }
+      // Marcar como Pagado
+      const markPaidBtn = card.querySelector(".mark-paid-btn");
+      if (markPaidBtn) {
+        markPaidBtn.addEventListener("click", async () => {
+          try {
+            await updateOrderStatus(order.id, "Pagado");
+            await renderOrders(ordersFilterStatus);
+          } catch (err) {
+            console.error("Error marcando el pedido como pagado:", err);
+            alert("No se pudo marcar el pedido como pagado.");
+          }
+        });
+      }
+
+      // Avanzar el pedido a En proceso / Enviado / Entregado
+      card.querySelectorAll(".status-action-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          try {
+            await updateOrderStatus(order.id, btn.getAttribute("data-status"));
+            await renderOrders(ordersFilterStatus);
+          } catch (err) {
+            console.error("Error actualizando el estado del pedido:", err);
+            alert("No se pudo actualizar el estado del pedido.");
+          }
+        });
       });
+
+      // Revertir un pedido pagado por error, de vuelta a Pendiente
+      const revertBtn = card.querySelector(".revert-to-pending-btn");
+      if (revertBtn) {
+        revertBtn.addEventListener("click", async () => {
+          if (confirm("¿Revertir este pedido a Pendiente? Se ocultarán los botones de avance de estado.")) {
+            try {
+              await updateOrderStatus(order.id, "Pendiente");
+              await renderOrders(ordersFilterStatus);
+            } catch (err) {
+              console.error("Error revirtiendo el pedido a pendiente:", err);
+              alert("No se pudo revertir el pedido.");
+            }
+          }
+        });
+      }
+
+      // Generar y descargar el PDF del pedido
+      const pdfBtn = card.querySelector(".generate-pdf-btn");
+      if (pdfBtn) {
+        pdfBtn.addEventListener("click", () => generateOrderPdf(order));
+      }
     });
 
     // Eliminar pedido individual
@@ -458,6 +509,103 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       });
     });
+  }
+
+  // --- GENERAR PDF DE PEDIDO ---
+  function generateOrderPdf(order) {
+    if (!window.jspdf) {
+      alert("No se pudo cargar el generador de PDF. Verificá tu conexión a internet e intentá de nuevo.");
+      return;
+    }
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const currencyFmt = (val) => new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", minimumFractionDigits: 0 }).format(val || 0);
+
+    let deliveryDateText = order.deliveryDate;
+    if (!deliveryDateText) {
+      const purchaseTimestamp = parseInt(String(order.id).replace("PED-", ""), 10);
+      if (!isNaN(purchaseTimestamp)) {
+        deliveryDateText = formatDeliveryDate(addBusinessDays(new Date(purchaseTimestamp), 5));
+      }
+    }
+
+    // Encabezado
+    doc.setFontSize(16);
+    doc.setTextColor(30, 30, 30);
+    doc.text("Ingenio cv - Comunicación Visual", 14, 18);
+    doc.setFontSize(12);
+    doc.setTextColor(90, 90, 90);
+    doc.text("Comprobante de Pedido", 14, 25);
+
+    doc.setDrawColor(220, 220, 220);
+    doc.line(14, 29, 196, 29);
+
+    // Datos del pedido
+    doc.setFontSize(10);
+    doc.setTextColor(60, 60, 60);
+    let y = 38;
+    doc.setFont(undefined, "bold");
+    doc.text(`Pedido: ${order.id}`, 14, y);
+    doc.setFont(undefined, "normal");
+    doc.text(`Fecha de compra: ${order.date || "-"}`, 110, y);
+
+    y += 7;
+    doc.setFont(undefined, "bold");
+    doc.text(`Estado: ${order.status || "-"}`, 14, y);
+    doc.setFont(undefined, "normal");
+    if (deliveryDateText) doc.text(`Entrega estimada: ${deliveryDateText}`, 110, y);
+
+    // Datos del cliente
+    y += 12;
+    doc.setFontSize(11);
+    doc.setTextColor(30, 30, 30);
+    doc.setFont(undefined, "bold");
+    doc.text("Datos del Cliente", 14, y);
+    doc.setFont(undefined, "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(70, 70, 70);
+
+    y += 7;
+    doc.text(`Nombre: ${order.customer?.name || "-"}`, 14, y);
+    y += 6;
+    doc.text(`Teléfono: ${order.customer?.phone || "-"}`, 14, y);
+    y += 6;
+    doc.text(`Método de entrega: ${order.customer?.shippingMethod || "-"}`, 14, y);
+
+    if (order.customer?.address) {
+      y += 6;
+      const addressLines = doc.splitTextToSize(`Dirección: ${order.customer.address}`, 180);
+      doc.text(addressLines, 14, y);
+      y += (addressLines.length - 1) * 5;
+    }
+    if (order.customer?.notes) {
+      y += 6;
+      const noteLines = doc.splitTextToSize(`Notas: ${order.customer.notes}`, 180);
+      doc.text(noteLines, 14, y);
+      y += (noteLines.length - 1) * 5;
+    }
+
+    // Detalle de productos
+    y += 10;
+    const rows = (order.items || []).map(item => [
+      item.name || "-",
+      String(item.quantity ?? "-"),
+      currencyFmt(item.subtotal)
+    ]);
+
+    doc.autoTable({
+      startY: y,
+      head: [["Producto", "Cantidad", "Subtotal"]],
+      body: rows,
+      foot: [["", "TOTAL", currencyFmt(order.total)]],
+      theme: "grid",
+      headStyles: { fillColor: [52, 131, 250], textColor: 255, fontStyle: "bold" },
+      footStyles: { fillColor: [240, 240, 240], textColor: 20, fontStyle: "bold" },
+      styles: { fontSize: 9, cellPadding: 3 },
+      columnStyles: { 1: { halign: "center" }, 2: { halign: "right" } }
+    });
+
+    doc.save(`Pedido-${order.id}.pdf`);
   }
 
   window.toggleOrderDetail = function(detailId) {
