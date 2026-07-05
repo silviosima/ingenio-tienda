@@ -104,7 +104,18 @@ body.ml-theme .ml-search-wrap .search-input-wrap {
   min-width: 0;
 }
 
-body.ml-theme .ml-search-wrap .search-input-wrap svg { display: none; }
+/* Solo ocultamos un ícono suelto que estuviera flotando directamente sobre el input
+   (diseño viejo). El ícono del botón de búsqueda (.ml-search-btn svg) queda visible. */
+body.ml-theme .ml-search-wrap .search-input-wrap > svg { display: none; }
+
+body.ml-theme .ml-search-btn svg {
+  display: inline-block;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.ml-theme .ml-search-btn:hover svg {
+  transform: scale(1.15);
+}
 
 body.ml-theme .search-input {
   background: #ffffff;

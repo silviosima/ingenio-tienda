@@ -1264,6 +1264,107 @@ footer {
   transition-delay: calc(var(--reveal-index, 0) * 60ms);
 }
 
+/* ---------- Animación: "salto" del carrito al agregar un producto ---------- */
+@keyframes cartBump {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.35); }
+  55%  { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+.cart-icon-btn.cart-bump {
+  animation: cartBump 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cart-badge.cart-bump {
+  animation: cartBump 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---------- Animación: brillo suave al pasar el mouse por el logo ---------- */
+.logo-img {
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.logo-container:hover .logo-img {
+  transform: scale(1.05) rotate(-2deg);
+}
+
+/* ---------- Animación: chips de filtro con efecto de "resorte" al activarse ---------- */
+@keyframes filterPop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.filter-btn.active {
+  animation: filterPop 0.3s ease;
+}
+
+.filter-btn {
+  transform: translateY(0);
+}
+
+.filter-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* ---------- Animación: pulso en botones primarios al pasar el mouse ---------- */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.25);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.btn-primary:hover::after {
+  transform: scaleX(1);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+/* ---------- Animación: aparición suave de los modales ---------- */
+@keyframes modalPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-overlay.open .modal-box {
+  animation: modalPopIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- Animación: los ítems del carrito entran deslizándose ---------- */
+@keyframes cartItemIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.cart-item {
+  animation: cartItemIn 0.35s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

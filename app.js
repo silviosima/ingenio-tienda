@@ -316,6 +316,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     saveCart(cart);
     updateCartUI();
+    bumpCartIcon();
+  }
+
+  // Pequeño "salto" del ícono del carrito y del badge al agregar un producto.
+  function bumpCartIcon() {
+    if (!cartIconBtn || !cartBadge) return;
+    cartIconBtn.classList.remove("cart-bump");
+    cartBadge.classList.remove("cart-bump");
+    // Forzamos reflow para poder re-disparar la animación aunque se agregue rápido varias veces.
+    void cartIconBtn.offsetWidth;
+    cartIconBtn.classList.add("cart-bump");
+    cartBadge.classList.add("cart-bump");
   }
 
   function updateCartUI() {
