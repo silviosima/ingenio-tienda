@@ -359,7 +359,7 @@ header {
   position: relative;
 }
 
-.search-input-wrap svg {
+.search-input-wrap > svg {
   position: absolute;
   left: 1rem;
   top: 50%;
