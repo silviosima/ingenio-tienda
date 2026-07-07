@@ -511,3 +511,49 @@ body.ml-theme .footer-nav a:hover {
 body.ml-theme .footer-bottom {
   border-top: 1px solid rgba(0,0,0,0.06);
 }
+
+/* ---------- RESPONSIVE - CELULARES (hasta 640px) ---------- */
+@media (max-width: 640px) {
+  body.ml-theme .ml-header-top {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.65rem 1rem;
+  }
+
+  /* Logo y acciones quedan en la primera fila */
+  body.ml-theme .logo-container {
+    order: 1;
+  }
+
+  body.ml-theme .header-actions {
+    order: 2;
+    margin-left: auto;
+  }
+
+  /* El buscador pasa a ocupar toda la fila de abajo */
+  body.ml-theme .ml-search-wrap {
+    order: 3;
+    flex-basis: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  body.ml-theme .logo-img {
+    height: 32px;
+  }
+
+  body.ml-theme .menu-toggle-btn {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.85rem;
+  }
+
+  /* El menú desplegable no debe salirse de la pantalla */
+  body.ml-theme .ml-header-nav {
+    min-width: 200px;
+    right: -0.5rem;
+  }
+
+  body.ml-theme .hero {
+    padding: 2.5rem 1.25rem;
+  }
+}
