@@ -40,7 +40,7 @@ body.ml-theme .ml-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #2b2b2b; /* gris oscuro */
+  background: #4a4a4a; /* gris un poco más claro */
   backdrop-filter: none;
   border-bottom: none;
   box-shadow: 0 1px 3px rgba(0,0,0,0.15);
@@ -510,12 +510,6 @@ body.ml-theme .footer-nav a:hover {
 
 body.ml-theme .footer-bottom {
   border-top: 1px solid rgba(0,0,0,0.06);
-}
-
-/* Brillo blanco sutil en el logo del header para que se lean bien
-   las letras chicas ("Comunicación Visual") sobre el fondo gris oscuro */
-body.ml-theme .ml-header .logo-img {
-  filter: drop-shadow(0 0 2px rgba(255,255,255,0.85)) drop-shadow(0 0 5px rgba(255,255,255,0.5));
 }
 
 /* ---------- RESPONSIVE - CELULARES (hasta 640px) ---------- */
