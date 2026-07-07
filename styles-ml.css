@@ -40,7 +40,7 @@ body.ml-theme .ml-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #ffbb6b; /* naranja más intenso */
+  background: #d99a2b; /* amarillo oscuro tirando a naranja */
   backdrop-filter: none;
   border-bottom: none;
   box-shadow: 0 1px 3px rgba(0,0,0,0.15);
