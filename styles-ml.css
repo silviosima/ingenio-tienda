@@ -40,7 +40,7 @@ body.ml-theme .ml-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #d99a2b; /* amarillo oscuro tirando a naranja */
+  background: #2b2b2b; /* gris oscuro */
   backdrop-filter: none;
   border-bottom: none;
   box-shadow: 0 1px 3px rgba(0,0,0,0.15);
@@ -65,7 +65,7 @@ body.ml-theme .logo-text {
   background: none;
   -webkit-background-clip: initial;
   -webkit-text-fill-color: initial;
-  color: #2d2d2d;
+  color: #f2f2f2;
 }
 
 body.ml-theme .header-actions {
@@ -77,9 +77,9 @@ body.ml-theme .menu-toggle-btn {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  background: rgba(0,0,0,0.05);
+  background: rgba(255,255,255,0.1);
   border: none;
-  color: #2d2d2d;
+  color: #f2f2f2;
   padding: 0.55rem 0.9rem;
   border-radius: 6px;
   font-weight: 600;
@@ -90,7 +90,7 @@ body.ml-theme .menu-toggle-btn {
 }
 
 body.ml-theme .menu-toggle-btn:hover {
-  background: rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.18);
 }
 
 body.ml-theme .ml-search-wrap {
@@ -149,11 +149,11 @@ body.ml-theme .ml-search-btn:hover {
 }
 
 body.ml-theme .cart-icon-btn {
-  color: #2d2d2d;
+  color: #f2f2f2;
 }
 
 body.ml-theme .cart-icon-btn:hover {
-  color: #2d2d2d;
+  color: #f2f2f2;
   opacity: 0.7;
 }
 
@@ -510,6 +510,12 @@ body.ml-theme .footer-nav a:hover {
 
 body.ml-theme .footer-bottom {
   border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Brillo blanco sutil en el logo del header para que se lean bien
+   las letras chicas ("Comunicación Visual") sobre el fondo gris oscuro */
+body.ml-theme .ml-header .logo-img {
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.85)) drop-shadow(0 0 5px rgba(255,255,255,0.5));
 }
 
 /* ---------- RESPONSIVE - CELULARES (hasta 640px) ---------- */
