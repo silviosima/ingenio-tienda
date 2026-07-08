@@ -627,47 +627,60 @@ document.addEventListener("DOMContentLoaded", async () => {
     </div>
   `;
 
+  // Función para abrir el modal de forma de pegar
+  async function openPaymentPdfModal() {
+    const pdf = await getPaymentPdf();
+    if (pdf && pdf.data) {
+      // Mostrar el contenido HTML de la guía
+      paymentPdfContent.innerHTML = pegarGuideHTML;
+      paymentPdfContent.style.display = "block";
+      paymentPdfEmptyState.style.display = "none";
+      paymentPdfDownloadBtn.style.display = "inline-flex";
+      if (paymentPdfCloseBtn) paymentPdfCloseBtn.style.display = "inline-block";
+      currentPaymentPdfData = pdf;
+    } else {
+      paymentPdfContent.style.display = "none";
+      paymentPdfEmptyState.style.display = "block";
+      paymentPdfDownloadBtn.style.display = "none";
+      if (paymentPdfCloseBtn) paymentPdfCloseBtn.style.display = "none";
+      currentPaymentPdfData = null;
+    }
+    openModal(paymentPdfModal);
+  }
+
+  // Agregar event listeners a todos los links de "Forma de Pegar"
   paymentPdfLinks.forEach(link => {
-    link.addEventListener("click", async (e) => {
-      e.preventDefault();
-      const pdf = await getPaymentPdf();
-      if (pdf && pdf.data) {
-        // Mostrar el contenido HTML de la guía
-        paymentPdfContent.innerHTML = pegarGuideHTML;
-        paymentPdfContent.style.display = "block";
-        paymentPdfEmptyState.style.display = "none";
-        paymentPdfDownloadBtn.style.display = "inline-flex";
-        paymentPdfCloseBtn.style.display = "inline-block";
-        currentPaymentPdfData = pdf;
-      } else {
-        paymentPdfContent.style.display = "none";
-        paymentPdfEmptyState.style.display = "block";
-        paymentPdfDownloadBtn.style.display = "none";
-        paymentPdfCloseBtn.style.display = "none";
-        currentPaymentPdfData = null;
-      }
-      openModal(paymentPdfModal);
-    });
+    if (link) {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        openPaymentPdfModal();
+      });
+    }
   });
 
   // Botón para descargar como PDF
-  paymentPdfDownloadBtn.addEventListener("click", async () => {
-    if (!currentPaymentPdfData || !currentPaymentPdfData.data) return;
-    
-    // Descargar el PDF original desde Supabase
-    const link = document.createElement("a");
-    link.href = currentPaymentPdfData.data;
-    link.download = currentPaymentPdfData.name || "forma-de-pegar.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  });
+  if (paymentPdfDownloadBtn) {
+    paymentPdfDownloadBtn.addEventListener("click", async () => {
+      if (!currentPaymentPdfData || !currentPaymentPdfData.data) return;
+      
+      // Descargar el PDF original desde Supabase
+      const link = document.createElement("a");
+      link.href = currentPaymentPdfData.data;
+      link.download = currentPaymentPdfData.name || "forma-de-pegar.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  }
 
   if (paymentPdfCloseBtn) {
     paymentPdfCloseBtn.addEventListener("click", () => {
       closeModal(paymentPdfModal);
     });
   }
+
+  // Hacer openPaymentPdfModal disponible globalmente para debugging
+  window.openPaymentPdfModal = openPaymentPdfModal;
 
   // --- HELPERS MODALES ---
   function openModal(modal) {
