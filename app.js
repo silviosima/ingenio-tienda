@@ -57,9 +57,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("nav-payment-pdf-link"),
     document.getElementById("footer-payment-pdf-link")
   ].filter(Boolean);
-  const paymentPdfFrame = document.getElementById("payment-pdf-frame");
-  const paymentPdfDownloadBtn = document.getElementById("payment-pdf-download-btn");
   const paymentPdfEmptyState = document.getElementById("payment-pdf-empty-state");
+  const paymentPdfDownloadBtn = document.getElementById("payment-pdf-download-btn");
 
   const contactModal = document.getElementById("contact-modal");
   const contactLink = document.getElementById("nav-contact-link");
@@ -571,27 +570,104 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
   });
 
-  // --- MODAL FORMA DE PAGO (PDF) ---
+  // --- MODAL FORMA DE PEGAR (HTML + PDF) ---
+  const paymentPdfContent = document.getElementById("payment-pdf-content");
+  const paymentPdfCloseBtn = document.getElementById("payment-pdf-close-btn");
+  let currentPaymentPdfData = null;
+
+  // Contenido HTML de la guía de pegado
+  const pegarGuideHTML = `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+      <div style="text-align: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #3483fa;">
+        <h1 style="color: #3483fa; margin: 0 0 0.5rem 0; font-size: 2rem;">Guía rápida de ¿Cómo pegar las calcas vinilo</h1>
+        <p style="color: #666; margin: 0; font-size: 0.95rem;">Ingenio - Comunicación Visual</p>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <h2 style="color: #e8792a; font-size: 1.3rem; margin: 1.5rem 0 1rem 0;">Materiales utilizados:</h2>
+        <p>Además del ploteo en vinilo se necesitara: <strong>cinta de papel, rociador con agua, alcohol, papel de cocina, espátula (Tarjeta de Credito).</strong></p>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <h2 style="color: #e8792a; font-size: 1.3rem; margin: 1.5rem 0 1rem 0;">1. Limpieza:</h2>
+        <p>Es fundamental que la superficie esté completamente limpia. Sin restos de polvo, grasa o algún otro producto que impida la correcta instalación de la gráfica. Para esto se aconseja usar papel con alcohol isopropilico para eliminar cualquier impureza o restos de limpiadores abrasivos que puedan existir sobre la superficie a instalar.</p>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <h2 style="color: #e8792a; font-size: 1.3rem; margin: 1.5rem 0 1rem 0;">2. Presentar la gráfica:</h2>
+        <p>Presentar la gráfica en el lugar deseado, tomando medidas. Pegar tiritas con cinta de pintor en la parte superior para sujetar la gráfica. Volver a tomar medidas y si es necesario corregir.</p>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <h2 style="color: #e8792a; font-size: 1.3rem; margin: 1.5rem 0 1rem 0;">3. Retirar la Calco del papel:</h2>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <h2 style="color: #e8792a; font-size: 1.3rem; margin: 1.5rem 0 1rem 0;">4. Pegado en Húmedo:</h2>
+        <p>Es necesario contar con un rociador el cual se deberá llenar con agua. Humedecer la superficie incluso puede humedeserce la gráfica del lado del pegamento. Con este método es mucho menos probable que queden globos de aire incluso permite corregir si algo quedó torcido.</p>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <h2 style="color: #e8792a; font-size: 1.3rem; margin: 1.5rem 0 1rem 0;">5. Espatulado:</h2>
+        <p>Espatular siempre de arriba hacia abajo y del centro hacia los costados. Hacerlo firmemente haciendo presión de forma pareja y uniforme. Si no posee una espátula se puede utilizar una tarjeta de crédito o cualquier otro elemento que sirva para tal fin para sacar cualquier resto de agua.</p>
+      </div>
+
+      <div style="margin-bottom: 2rem; padding: 1.5rem; background: #f5f5f5; border-radius: 8px;">
+        <p style="margin: 0; color: #555;"><strong>Finalmente</strong> para terminar el proceso de pegado dejar secar la calco al sol hasta que termine de evaporar el agua o bien ayudarlo con una pistola de calor para acelerar el proceso.</p>
+      </div>
+
+      <div style="text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #ddd;">
+        <p style="font-size: 0.85rem; color: #666; margin: 0;">
+          <strong>Ingenio</strong> - Comunicación Visual<br>
+          Av. Mitre 2317 - Tel: 02317-522217 | Cel: 2317-486251<br>
+          9 de Julio - Buenos Aires<br>
+          Email: ingeniocv@ceystel.com.ar
+        </p>
+      </div>
+    </div>
+  `;
+
   paymentPdfLinks.forEach(link => {
     link.addEventListener("click", async (e) => {
       e.preventDefault();
       const pdf = await getPaymentPdf();
       if (pdf && pdf.data) {
-        paymentPdfFrame.src = pdf.data;
-        paymentPdfFrame.style.display = "block";
+        // Mostrar el contenido HTML de la guía
+        paymentPdfContent.innerHTML = pegarGuideHTML;
+        paymentPdfContent.style.display = "block";
         paymentPdfEmptyState.style.display = "none";
         paymentPdfDownloadBtn.style.display = "inline-flex";
-        paymentPdfDownloadBtn.href = pdf.data;
-        paymentPdfDownloadBtn.download = pdf.name || "forma-de-pago.pdf";
+        paymentPdfCloseBtn.style.display = "inline-block";
+        currentPaymentPdfData = pdf;
       } else {
-        paymentPdfFrame.style.display = "none";
-        paymentPdfFrame.src = "";
+        paymentPdfContent.style.display = "none";
         paymentPdfEmptyState.style.display = "block";
         paymentPdfDownloadBtn.style.display = "none";
+        paymentPdfCloseBtn.style.display = "none";
+        currentPaymentPdfData = null;
       }
       openModal(paymentPdfModal);
     });
   });
+
+  // Botón para descargar como PDF
+  paymentPdfDownloadBtn.addEventListener("click", async () => {
+    if (!currentPaymentPdfData || !currentPaymentPdfData.data) return;
+    
+    // Descargar el PDF original desde Supabase
+    const link = document.createElement("a");
+    link.href = currentPaymentPdfData.data;
+    link.download = currentPaymentPdfData.name || "forma-de-pegar.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+
+  if (paymentPdfCloseBtn) {
+    paymentPdfCloseBtn.addEventListener("click", () => {
+      closeModal(paymentPdfModal);
+    });
+  }
 
   // --- HELPERS MODALES ---
   function openModal(modal) {

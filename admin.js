@@ -192,7 +192,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         const url = await uploadProductImage(compressed);
         image1Input.value = url;
         image1CustomInput.value = "";
-        document.querySelectorAll("#image1-select-grid .image-option").forEach(o => o.classList.remove("selected"));
       } catch (err) {
         console.error("Error subiendo imagen:", err);
         alert("Hubo un problema subiendo la imagen. Intentá de nuevo.");
@@ -211,7 +210,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         const url = await uploadProductImage(compressed);
         image2Input.value = url;
         image2CustomInput.value = "";
-        document.querySelectorAll("#image2-select-grid .image-option").forEach(o => o.classList.remove("selected"));
       } catch (err) {
         console.error("Error subiendo imagen:", err);
         alert("Hubo un problema subiendo la imagen. Intentá de nuevo.");
@@ -219,32 +217,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // --- SELECTORES DE PLANTILLAS ---
-  const image1Options = document.querySelectorAll("#image1-select-grid .image-option");
-  image1Options.forEach(opt => {
-    opt.addEventListener("click", () => {
-      image1Options.forEach(o => o.classList.remove("selected"));
-      opt.classList.add("selected");
-      const val = opt.getAttribute("data-val");
-      image1Input.value = val;
-      image1CustomInput.value = "";
-      document.getElementById("file-img1").value = "";
-      setImagePreview(img1Preview, img1PreviewBox, "", val || "");
-    });
-  });
 
-  const image2Options = document.querySelectorAll("#image2-select-grid .image-option");
-  image2Options.forEach(opt => {
-    opt.addEventListener("click", () => {
-      image2Options.forEach(o => o.classList.remove("selected"));
-      opt.classList.add("selected");
-      const val = opt.getAttribute("data-val");
-      image2Input.value = val;
-      image2CustomInput.value = "";
-      document.getElementById("file-img2").value = "";
-      setImagePreview(img2Preview, img2PreviewBox, "", val || "");
-    });
-  });
 
   // --- POBLAR SELECTORES DEL FORMULARIO ---
   async function populateFormSelectors() {

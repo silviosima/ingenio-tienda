@@ -241,22 +241,27 @@
     </div>
   </div>
 
-  <!-- Modal Forma de Pegar (PDF) -->
+  <!-- Modal Forma de Pegar (HTML + PDF) -->
   <div class="modal-overlay" id="payment-pdf-modal">
-    <div class="modal-box" style="max-width: 900px;">
+    <div class="modal-box" style="max-width: 900px; max-height: 90vh; display: flex; flex-direction: column;">
       <div class="modal-header">
         <h2 class="modal-title">Forma de Pegar</h2>
         <button class="close-modal-btn" aria-label="Cerrar">&times;</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="flex: 1; overflow-y: auto;">
         <div id="payment-pdf-empty-state" style="text-align:center; padding: 3rem 1rem; color: var(--text-muted); display:none;">
-          <p>Todavía no se cargó el documento de forma de pago. Por favor, contactanos por WhatsApp para más información.</p>
+          <p>Todavía no se cargó el documento de forma de pego. Por favor, contactanos por WhatsApp para más información.</p>
         </div>
-        <iframe id="payment-pdf-frame" title="Forma de Pegar" style="width:100%; height:65vh; border:1px solid var(--border-color); border-radius:8px; display:none;"></iframe>
-        <a href="#" id="payment-pdf-download-btn" class="btn btn-primary" style="width:100%; margin-top:1rem; padding:0.9rem; display:none; justify-content:center; align-items:center;" download>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          Descargar PDF
-        </a>
+        <div id="payment-pdf-content" style="display:none; padding: 1.5rem; background: white; color: #333;">
+          <!-- El contenido HTML se inyectará aquí -->
+        </div>
+      </div>
+      <div style="padding: 1rem; border-top: 1px solid var(--border-color); display: flex; gap: 0.5rem; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" id="payment-pdf-close-btn" style="display:none;">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="payment-pdf-download-btn" style="display:none; flex: 1;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem; vertical-align: middle;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Descargar como PDF
+        </button>
       </div>
     </div>
   </div>
