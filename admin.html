@@ -11,15 +11,12 @@
       margin: 0 auto;
       padding: 4rem 2rem;
     }
-    .admin-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 2fr;
-      gap: 3rem;
-      align-items: start;
+    .admin-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
     }
-    @media (max-width: 968px) {
-      .admin-grid { grid-template-columns: 1fr; }
-    }
+    .admin-box.hidden { display: none; }
     .admin-box {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -218,27 +215,25 @@
       <h1 style="font-size:2.8rem;font-weight:800;margin-top:0.5rem;color:#000000;">Panel de Gestión</h1>
     </div>
 
-    <div class="admin-grid">
+    <div class="admin-stack">
 
-      <!-- Left Side: Settings + Product Form -->
-      <div>
-        <!-- Settings -->
-        <div class="admin-box">
-          <h2 class="admin-box-title">Configuración General</h2>
-          <form id="settings-form">
-            <div class="form-group">
-              <label class="form-label" for="vendor-phone">WhatsApp del Vendedor *</label>
-              <input type="text" id="vendor-phone" class="form-control" placeholder="Ej. 54923200342399" required>
-              <small style="color:var(--text-muted);font-size:0.8rem;display:block;margin-top:0.25rem;">Código de país + código de área (sin 15) + número. Ej: 54923200342399</small>
-            </div>
-            <button type="submit" class="btn btn-primary btn-sm" style="width:100%;">Guardar Ajustes</button>
-          </form>
-        </div>
+      <!-- Configuración General: a lo ancho, arriba -->
+      <div class="admin-box">
+        <h2 class="admin-box-title">Configuración General</h2>
+        <form id="settings-form">
+          <div class="form-group">
+            <label class="form-label" for="vendor-phone">WhatsApp del Vendedor *</label>
+            <input type="text" id="vendor-phone" class="form-control" placeholder="Ej. 54923200342399" required>
+            <small style="color:var(--text-muted);font-size:0.8rem;display:block;margin-top:0.25rem;">Código de país + código de área (sin 15) + número. Ej: 54923200342399</small>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm" style="width:100%;">Guardar Ajustes</button>
+        </form>
+      </div>
 
-        <!-- Product Form -->
-        <div class="admin-box">
-          <h2 class="admin-box-title" id="form-title">Agregar Calcomanía</h2>
-          <form id="product-form">
+      <!-- Product Form: oculto hasta editar un producto o pulsar "Agregar Producto Nuevo" -->
+      <div class="admin-box hidden" id="product-form-box">
+        <h2 class="admin-box-title" id="form-title">Agregar Calcomanía</h2>
+        <form id="product-form">
             <input type="hidden" id="product-id-field">
 
             <div class="form-group">
@@ -359,10 +354,9 @@
               <button type="button" class="btn btn-secondary" style="display:none;" id="cancel-edit-btn">Cancelar</button>
             </div>
           </form>
-        </div>
       </div>
 
-      <!-- Right Side: Tabbed Panel -->
+      <!-- Panel con pestañas: Calcomanías, Pedidos, Marcas, etc. -->
       <div class="admin-box">
         <div class="admin-tab-group">
           <button class="admin-tab-btn active" data-tab="tab-decals">Calcomanías</button>
@@ -376,7 +370,10 @@
         <div class="admin-tab-content active" id="tab-decals">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
             <h3 style="font-size:1.2rem;font-weight:700;">Catálogo de Productos</h3>
-            <button class="btn btn-secondary btn-sm" id="reset-catalog-btn">Restaurar Semilla</button>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+              <button class="btn btn-primary btn-sm" id="add-new-product-btn">+ Agregar Producto Nuevo</button>
+              <button class="btn btn-secondary btn-sm" id="reset-catalog-btn">Restaurar Semilla</button>
+            </div>
           </div>
           <div class="form-group" style="max-width:400px;">
             <input type="text" id="decals-search-input" class="form-control" placeholder="Buscar calcomanía por nombre, marca o categoría...">

@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // DOM
   const tableBody = document.getElementById("admin-table-body");
+  const productFormBox = document.getElementById("product-form-box");
+  const addNewProductBtn = document.getElementById("add-new-product-btn");
   const productForm = document.getElementById("product-form");
   const settingsForm = document.getElementById("settings-form");
   const vendorPhoneInput = document.getElementById("vendor-phone");
@@ -806,7 +808,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (confirm(`¿Eliminar "${product.name}"?`)) {
       await deleteProductById(id);
       await renderAdminTable();
-      if (productIdField.value === id) resetProductForm();
+      if (productIdField.value === id) {
+        resetProductForm();
+        hideProductFormBox();
+      }
     }
   }
 
@@ -852,10 +857,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     formTitle.textContent = "Editar Calcomanía";
     submitBtn.textContent = "Actualizar Producto";
     cancelEditBtn.style.display = "inline-block";
+    showProductFormBox();
+  }
+
+  // Muestra el panel de "Agregar/Editar Calcomanía" y hace scroll hasta él.
+  function showProductFormBox() {
+    productFormBox.classList.remove("hidden");
+    productFormBox.style.display = "block";
     productForm.scrollIntoView({ behavior: "smooth" });
   }
 
-  cancelEditBtn.addEventListener("click", resetProductForm);
+  // Oculta el panel de "Agregar/Editar Calcomanía".
+  function hideProductFormBox() {
+    productFormBox.classList.add("hidden");
+    productFormBox.style.display = "none";
+  }
+
+  // Botón "+ Agregar Producto Nuevo": limpia el formulario y lo muestra.
+  addNewProductBtn.addEventListener("click", () => {
+    resetProductForm();
+    showProductFormBox();
+  });
+
+  cancelEditBtn.addEventListener("click", () => {
+    resetProductForm();
+    hideProductFormBox();
+  });
 
   function resetProductForm() {
     productIdField.value = "";
@@ -902,6 +929,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       await renderAdminTable();
       resetProductForm();
+      hideProductFormBox();
       alert("¡Producto guardado exitosamente!");
     } catch (err) {
       console.error("Error guardando el producto:", err);
@@ -920,6 +948,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       await renderBrandsList();
       await renderCategoriesList();
       resetProductForm();
+      hideProductFormBox();
     }
   });
 
