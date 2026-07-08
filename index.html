@@ -190,36 +190,7 @@
           </div>
 
           <h3 style="font-size: 1.1rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.5rem; color: var(--primary-cyan);">3. Método de Pago</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">El pago se realiza mediante transferencia bancaria. Al finalizar, enviarás el detalle del pedido a WhatsApp para que coordinemos y nos envíes el comprobante de transferencia.</p>
-          
-          <div class="bank-details-box" id="bank-details">
-            <div class="bank-details-title">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
-              Cuenta Santander para Transferencia
-            </div>
-            <div class="bank-row">
-              <span class="bank-label">Titular:</span>
-              <span class="bank-val" style="font-family: inherit;">Maccagnani Silvio</span>
-            </div>
-            <div class="bank-row">
-              <span class="bank-label">CUIT:</span>
-              <span class="bank-val">23200342399</span>
-            </div>
-            <div class="bank-row">
-              <span class="bank-label">CBU:</span>
-              <div>
-                <span class="bank-val">0720473388000035595854</span>
-                <button type="button" class="copy-btn" id="copy-cbu-btn" onclick="copyToClipboard('0720473388000035595854', 'copy-cbu-btn')">Copiar</button>
-              </div>
-            </div>
-            <div class="bank-row">
-              <span class="bank-label">Alias:</span>
-              <div>
-                <span class="bank-val">silvio.macc</span>
-                <button type="button" class="copy-btn" id="copy-alias-btn" onclick="copyToClipboard('silvio.macc', 'copy-alias-btn')">Copiar</button>
-              </div>
-            </div>
-          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">El pago se realiza mediante transferencia bancaria. Al finalizar, te vamos a enviar los datos de la cuenta directamente por WhatsApp para coordinar y que nos envíes el comprobante de transferencia.</p>
 
           <div class="cart-total-row" id="checkout-total-row" style="margin-top: 1.5rem;">
             <span>Total a pagar:</span>
@@ -240,24 +211,13 @@
       <div class="modal-body success-view">
         <div class="success-icon">✓</div>
         <h2 class="success-title">¡Pedido Generado!</h2>
-        <p class="success-text">Hemos preparado tu pedido. Para finalizar la compra, debés transferir el total e informarnos por WhatsApp enviando el detalle.</p>
+        <p class="success-text">Hemos preparado tu pedido. Para finalizar la compra, hacé clic abajo para enviarnos el detalle por WhatsApp: ahí te vamos a pasar los datos para transferir.</p>
         
         <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: 10px; margin-bottom: 1.5rem; text-align: left;">
-          <p style="font-size: 0.9rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between;">
+          <p style="font-size: 0.9rem; display: flex; justify-content: space-between; margin: 0;">
             <span>Total a transferir:</span>
             <strong id="success-total-val" style="color: var(--primary-cyan); font-size: 1.1rem;">$0</strong>
           </p>
-          <div style="border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem;">Datos del CBU para transferir:</p>
-            <p style="font-size: 0.9rem; font-family: monospace; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 0.25rem 0.5rem; border-radius: 4px;">
-              <span>CBU: 0720473388000035595854</span>
-              <button class="copy-btn" id="success-copy-cbu" onclick="copyToClipboard('0720473388000035595854', 'success-copy-cbu')">Copiar CBU</button>
-            </p>
-            <p style="font-size: 0.9rem; font-family: monospace; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 0.25rem 0.5rem; border-radius: 4px; margin-top: 0.5rem;">
-              <span>Alias: silvio.macc</span>
-              <button class="copy-btn" id="success-copy-alias" onclick="copyToClipboard('silvio.macc', 'success-copy-alias')">Copiar Alias</button>
-            </p>
-          </div>
         </div>
 
         <button class="btn btn-primary" id="success-whatsapp-btn" style="width: 100%; padding: 0.9rem;">

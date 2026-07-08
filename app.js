@@ -551,8 +551,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     whatsappText += `*Detalle del Pedido:*\n${orderDetailsText}`;
     whatsappText += `--------------------------------------\n`;
     whatsappText += `*TOTAL DEL PEDIDO: $${formattedTotal}*\n\n`;
-    whatsappText += `*Método de Pago:* Transferencia Bancaria (Santander)\n`;
-    whatsappText += `_Por favor, confirmá la recepción y enviá el comprobante por esta vía._`;
+    whatsappText += `*Método de Pago:* Transferencia Bancaria\n`;
+    whatsappText += `_Por favor, confirmá la recepción para pasarte los datos de la cuenta y coordinar el envío del comprobante._`;
 
     const encodedText = encodeURIComponent(whatsappText);
     const vendorPhone = await getVendorPhone();
