@@ -579,7 +579,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const pegarGuideHTML = `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
       <div style="text-align: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #3483fa;">
-        <h1 style="color: #3483fa; margin: 0 0 0.5rem 0; font-size: 2rem;">Guía rápida de ¿Cómo pegar las calcas vinilo</h1>
+        <h1 style="color: #3483fa; margin: 0 0 0.5rem 0; font-size: 2rem;">Guía rápida de ¿Cómo pegar los calcos en vinilo</h1>
         <p style="color: #666; margin: 0; font-size: 0.95rem;">Ingenio - Comunicación Visual</p>
       </div>
 

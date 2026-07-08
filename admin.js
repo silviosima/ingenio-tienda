@@ -802,29 +802,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Imagen 1
     const img1 = product.image1 || "";
-    image1CustomInput.value = "";
+    image1Input.value = img1;
+    image1CustomInput.value = img1.startsWith("data:") ? "" : img1;
     document.getElementById("file-img1").value = "";
-    let matched1 = false;
-    image1Options.forEach(opt => {
-      opt.classList.remove("selected");
-      if (opt.getAttribute("data-val") === img1) { opt.classList.add("selected"); image1Input.value = img1; matched1 = true; }
-    });
-    if (!matched1) { image1CustomInput.value = img1.startsWith("data:") ? "" : img1; image1Input.value = img1; }
     setImagePreview(img1Preview, img1PreviewBox, "", img1);
 
     // Imagen 2
     const img2 = product.image2 || "";
-    image2CustomInput.value = "";
+    image2Input.value = img2;
+    image2CustomInput.value = img2.startsWith("data:") ? "" : img2;
     document.getElementById("file-img2").value = "";
-    let matched2 = false;
-    image2Options.forEach(opt => {
-      opt.classList.remove("selected");
-      if (opt.getAttribute("data-val") === img2) { opt.classList.add("selected"); image2Input.value = img2; matched2 = true; }
-    });
-    if (!matched2) {
-      if (img2 === "") { image2Options[0].classList.add("selected"); image2Input.value = ""; }
-      else { image2CustomInput.value = img2.startsWith("data:") ? "" : img2; image2Input.value = img2; }
-    }
     setImagePreview(img2Preview, img2PreviewBox, "", img2);
 
     formTitle.textContent = "Editar Calcomanía";
@@ -863,15 +850,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     formTitle.textContent = "Agregar Calcomanía";
     submitBtn.textContent = "Guardar Producto";
     cancelEditBtn.style.display = "none";
-    image1Options.forEach(o => o.classList.remove("selected"));
-    image1Options[0].classList.add("selected");
-    image1Input.value = image1Options[0].getAttribute("data-val");
-    image2Options.forEach(o => o.classList.remove("selected"));
-    image2Options[0].classList.add("selected");
+    image1Input.value = "";
+    image1CustomInput.value = "";
     image2Input.value = "";
+    image2CustomInput.value = "";
     document.getElementById("file-img1").value = "";
     document.getElementById("file-img2").value = "";
-    setImagePreview(img1Preview, img1PreviewBox, "", image1Input.value);
+    setImagePreview(img1Preview, img1PreviewBox, "", "");
     setImagePreview(img2Preview, img2PreviewBox, "", "");
   }
 
