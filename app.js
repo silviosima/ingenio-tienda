@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div>
           <span style="background: rgba(84,190,204,0.15); color: var(--primary-cyan); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; margin-bottom: 1rem;">${product.brand}</span>
           <h2 style="font-size: 1.8rem; font-weight: 800; line-height: 1.2; margin-bottom: 1rem;">${product.name}</h2>
-          <p style="color: var(--text-muted); margin-bottom: 1.5rem;">${product.description}</p>
+          <p style="color: var(--text-muted); margin-bottom: 1.5rem; white-space: pre-line;">${product.description}</p>
           <div style="display: flex; flex-direction: column; gap: 0.75rem; background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 2rem;">
             <p style="font-size: 0.9rem; display: flex; justify-content: space-between;">
               <span style="color: var(--text-muted);">Cantidad de calcos:</span>
