@@ -1036,10 +1036,22 @@ header {
 }
 
 /* Detail Modal 2 Photo Layout */
+.detail-content-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.detail-info-col {
+  min-width: 0;
+}
+
 .detail-gallery-container {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  min-width: 0;
 }
 
 .detail-main-img-wrap {
@@ -1473,9 +1485,19 @@ footer {
     padding: 1rem;
   }
 
+  .detail-content-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
   .detail-main-img-wrap {
     height: 260px;
     padding: 0.5rem;
+  }
+
+  .detail-thumb-item {
+    width: 56px;
+    height: 56px;
   }
 
   /* Formulario de checkout: las columnas 2fr/1fr se apilan */

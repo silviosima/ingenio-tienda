@@ -263,9 +263,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     galleryHtml += `</div>`;
 
     modalContent.innerHTML = `
-      <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 2rem; align-items: start;">
+      <div class="detail-content-grid">
         ${galleryHtml}
-        <div>
+        <div class="detail-info-col">
           <span style="background: rgba(84,190,204,0.15); color: var(--primary-cyan); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; margin-bottom: 1rem;">${product.brand}</span>
           <h2 style="font-size: 1.8rem; font-weight: 800; line-height: 1.2; margin-bottom: 1rem;">${product.name}</h2>
           <p style="color: var(--text-muted); margin-bottom: 1.5rem; white-space: pre-line;">${product.description}</p>
@@ -283,7 +283,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               <strong style="color: var(--primary-green);">Alta resistencia al sol y agua</strong>
             </p>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <span style="font-size: 2rem; font-weight: 800; color: var(--primary-orange);">${formattedPrice}</span>
             <button class="btn btn-primary" id="modal-add-btn" style="padding: 0.8rem 2.5rem;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
